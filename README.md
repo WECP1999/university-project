@@ -3,7 +3,7 @@
 _Aplicación móvil desarrollada con react native donde se podran ver una lista de diferentes animes, el usuario podrá buscar por categoria y también guardar sus favoritos_
 
 ## Comenzando 🚀
-* [Documento](https://docs.google.com/document/d/1fL7CGXFhv8UVQAEgemfBhu6EsERGFGkuUbEl6grL9Dw/edit#)
+* [Documento](https://github.com/WECP1999/university-project/blob/main/docs/fase1.pdf)
 
 ### Pre-requisitos 📋
 ```
