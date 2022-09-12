@@ -33,6 +33,6 @@ Este proyecto está bajo la Licencia CREATIVE COMMONS cc Attribution-NonCommerci
 
 
 ## Enlace de interés :eyes:
-* Click-Up: [Tablero](https://trello.com/b/5VaZVU0z/vetapp)📋
+* Click-Up: [Tablero](https://sharing.clickup.com/36289965/b/h/7-36289965-2/1616b8d76ed3589)📋
 * Prototipos del diseño: [Figma](https://www.figma.com/file/HV5G4Fs7EpB58ADudnvpVi/Ichiran?node-id=0%3A1)🎨
 <!--* Funcionamiento del programa: [Video](https://drive.google.com/file/d/10mUA310CDmfgCbL5GEKGMRihTRjYPcnw/view)🎥-->
