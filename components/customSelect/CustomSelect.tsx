@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Layout,
   Select,
@@ -6,15 +6,15 @@ import {
   SelectProps,
   IndexPath,
   Text,
-} from "@ui-kitten/components";
+} from '@ui-kitten/components';
 import {
   useFormContext,
   useController,
   UseControllerProps,
-} from "react-hook-form";
-import TGenericList from "../../utils/types/TGenericList";
+} from 'react-hook-form';
+import TGenericList from '../../utils/types/TGenericList';
 
-interface CustomSelectProp<T extends Omit<TGenericList, "price">>
+interface CustomSelectProp<T extends Omit<TGenericList, 'price'>>
   extends UseControllerProps,
     SelectProps {
   label: string;
@@ -22,7 +22,7 @@ interface CustomSelectProp<T extends Omit<TGenericList, "price">>
   defaultValue?: string;
 }
 
-const CustomSelect = <T extends Omit<TGenericList, "price">>(
+const CustomSelect = <T extends Omit<TGenericList, 'price'>>(
   props: CustomSelectProp<T>
 ) => {
   const formContext = useFormContext();
@@ -31,8 +31,8 @@ const CustomSelect = <T extends Omit<TGenericList, "price">>(
 
   if (!formContext || !name) {
     const msg = !formContext
-      ? "Select must be wrapped by the FormProvider"
-      : "Name must be defined";
+      ? 'Select must be wrapped by the FormProvider'
+      : 'Name must be defined';
     console.error(msg);
     return null;
   }

@@ -1,10 +1,10 @@
-import React from "react";
-import { Input, InputProps } from "@ui-kitten/components";
+import React from 'react';
+import { Input, InputProps } from '@ui-kitten/components';
 import {
   useFormContext,
   useController,
   UseControllerProps,
-} from "react-hook-form";
+} from 'react-hook-form';
 
 interface CustomSelectProp extends UseControllerProps, InputProps {
   label: string;
@@ -17,8 +17,8 @@ const CustomInput = (props: CustomSelectProp) => {
 
   if (!formContext || !name) {
     const msg = !formContext
-      ? "TextInput must be wrapped by the FormProvider"
-      : "Name must be defined";
+      ? 'TextInput must be wrapped by the FormProvider'
+      : 'Name must be defined';
     console.error(msg);
     return null;
   }

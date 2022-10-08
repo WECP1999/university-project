@@ -1,1 +1,1 @@
-export { default } from "./TabOneScreen";
+export { default } from './TabOneScreen';
