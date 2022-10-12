@@ -2,6 +2,7 @@ import React from 'react';
 import ModalScreen from '../../screens/modalScreen';
 import NotFoundScreen from '../../screens/notFoundScreen';
 import Stack from '../../utils/navigation/Stack';
+import AccessNavigator from '../accessNavigator/';
 import BottomTabNavigator from '../bottomTabNavigator';
 
 const RootNavigator = () => {
@@ -10,6 +11,11 @@ const RootNavigator = () => {
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Accesses"
+        component={AccessNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
