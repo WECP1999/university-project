@@ -2,52 +2,45 @@ import React from 'react';
 import { Pressable } from 'react-native';
 import Colors from '../../constants/Colors';
 import useColorScheme from '../../utils/hooks/useColorScheme';
-import TabTwoScreen from '../../screens/tabTwoScreen';
+import ListScreen from '../../screens/listScreen';
 import BottomTab from '../../utils/navigation/BottomTab';
 import Icon from '../icon/';
-import TabOneScreen from '../../screens/tabOneScreen';
+import HomeScreen from '../../screens/homeScreen';
 import { RootTabScreenProps } from '../../utils/types/types';
+import FavoriteScreen from '../../screens/favoriteScreen';
 
 const BottomTabNavigator = () => {
   const colorScheme = useColorScheme();
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
     >
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <Icon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <Icon
-                name="info-circle"
-                color={Colors[colorScheme].text}
-                style={{
-                  marginRight: 15,
-                }}
-              />
-            </Pressable>
-          ),
-        })}
+        name="Home"
+        component={HomeScreen}
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color }) => <Icon name="home" color={color} />,
+        }}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="List"
+        component={ListScreen}
         options={{
-          title: 'TabTwo',
-          tabBarIcon: ({ color }) => <Icon name="code" color={color} />,
+          title: 'List',
+          tabBarIcon: ({ color }) => <Icon name="list" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Favorite"
+        component={FavoriteScreen}
+        options={{
+          title: 'Favorites',
+          tabBarIcon: ({ color }) => <Icon name="heart" color={color} />,
         }}
       />
     </BottomTab.Navigator>
