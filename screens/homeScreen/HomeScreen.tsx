@@ -1,24 +1,20 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 
 import EditScreenInfo from '../../components/EditScreenInfo';
 import { Text, View } from '../../components/Themed';
 import { RootTabScreenProps } from '../../utils/types/types';
 
-export default function TabOneScreen({
-  navigation,
-}: RootTabScreenProps<'TabOne'>) {
+const HomeScreen = ({ navigation }: RootTabScreenProps<'Home'>) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+      <Pressable
+        onPress={() => navigation.navigate('Accesses', { screen: 'Signin' })}
+      >
+        <Text style={styles.title}>Tab One</Text>
+      </Pressable>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -36,3 +32,5 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 });
+
+export default HomeScreen;
