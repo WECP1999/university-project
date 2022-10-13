@@ -5,12 +5,17 @@ type IconProps = {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
   style?: StyleProp<TextStyle>;
+  size?: number;
 };
 
 const Icon = (props: IconProps) => {
-  const { style, ...rest } = props;
+  const { style, size, ...rest } = props;
   return (
-    <FontAwesome size={30} style={[{ marginBottom: -3 }, style]} {...rest} />
+    <FontAwesome
+      size={size ?? 30}
+      style={[{ marginBottom: -3 }, style]}
+      {...rest}
+    />
   );
 };
 
