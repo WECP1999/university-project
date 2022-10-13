@@ -1,13 +1,12 @@
 import React from 'react';
-import { Pressable } from 'react-native';
 import Colors from '../../constants/Colors';
 import useColorScheme from '../../utils/hooks/useColorScheme';
 import ListScreen from '../../screens/listScreen';
 import BottomTab from '../../utils/navigation/BottomTab';
 import Icon from '../icon/';
 import HomeScreen from '../../screens/homeScreen';
-import { RootTabScreenProps } from '../../utils/types/types';
 import FavoriteScreen from '../../screens/favoriteScreen';
+import TopBarComponent from '../topBarComponent';
 
 const BottomTabNavigator = () => {
   const colorScheme = useColorScheme();
@@ -25,6 +24,7 @@ const BottomTabNavigator = () => {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <Icon name="home" color={color} />,
+          header: ({ navigation, route }) => <TopBarComponent title="Home" />,
         }}
       />
       <BottomTab.Screen
@@ -33,6 +33,7 @@ const BottomTabNavigator = () => {
         options={{
           title: 'List',
           tabBarIcon: ({ color }) => <Icon name="list" color={color} />,
+          header: ({ navigation, route }) => <TopBarComponent title="List" />,
         }}
       />
       <BottomTab.Screen
@@ -41,6 +42,9 @@ const BottomTabNavigator = () => {
         options={{
           title: 'Favorites',
           tabBarIcon: ({ color }) => <Icon name="heart" color={color} />,
+          header: ({ navigation, route }) => (
+            <TopBarComponent title="Favorite" />
+          ),
         }}
       />
     </BottomTab.Navigator>
