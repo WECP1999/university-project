@@ -1,26 +1,36 @@
-import { StyleSheet, Pressable } from 'react-native';
-
-import EditScreenInfo from '../../components/EditScreenInfo';
-import { Text, View } from '../../components/Themed';
+import { StyleSheet, ScrollView } from 'react-native';
+import ItemPreview from '../../components/itemPreview';
+import { View } from '../../components/Themed';
+import mangaList from '../../utils/mocks/mangaList.mock';
 import { RootTabScreenProps } from '../../utils/types/types';
 
 const HomeScreen = ({ navigation }: RootTabScreenProps<'Home'>) => {
   return (
-    <View style={styles.container}>
-      <Pressable
-        onPress={() => navigation.navigate('Accesses', { screen: 'Signin' })}
-      >
-        <Text style={styles.title}>Tab One</Text>
-      </Pressable>
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        {mangaList.map((manga, index) => (
+          <ItemPreview
+            key={manga.id}
+            item={manga}
+            navigation={navigation}
+            style={{
+              marginLeft: (index + 1) % 2 === 0 ? 36 : 0,
+            }}
+          />
+        ))}
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 8,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    width: '100%',
   },
   title: {
     fontSize: 20,
