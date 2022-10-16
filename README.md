@@ -25,7 +25,7 @@ Dispositivo con acceso a internet
 * **Corpeño Parada, Walter Ernesto** - :octocat: [WECP1999](https://github.com/WECP1999)
 * **Martínez Sanabria, David Ezequiel** - :octocat: [unproyectomas](https://github.com/unproyectomas)
 * **Portal Gomez, Roberto Jose** - :octocat: []()
-* **Crespin Bran, Bryan Efrain** - :octocat: []()
+* **Crespin Bran, Bryan Efrain** - :octocat: [bryancrespin](https://github.com/bryancrespin)
 
 ## Licencia 📄🔒 
 
@@ -35,4 +35,5 @@ Este proyecto está bajo la Licencia CREATIVE COMMONS cc Attribution-NonCommerci
 ## Enlace de interés :eyes:
 * Click-Up: [Tablero](https://sharing.clickup.com/36289965/b/h/7-36289965-2/1616b8d76ed3589)📋
 * Prototipos del diseño: [Figma](https://www.figma.com/file/HV5G4Fs7EpB58ADudnvpVi/Ichiran?node-id=0%3A1)🎨
+* Enlace a Manual Técnico: https://drive.google.com/file/d/1F_tR4w9tNMOyo57UV9FjBQNb8ly2OFpw/view?usp=sharing
 <!--* Funcionamiento del programa: [Video](https://drive.google.com/file/d/10mUA310CDmfgCbL5GEKGMRihTRjYPcnw/view)🎥-->
