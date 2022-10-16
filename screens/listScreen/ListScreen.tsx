@@ -1,12 +1,17 @@
-import { StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../../components/EditScreenInfo';
 import { Text, View } from '../../components/Themed';
+import { RootTabScreenProps } from '../../utils/types/types';
 
-const TabTwoScreen = () => {
+const TabTwoScreen = ({ navigation }: RootTabScreenProps<'List'>) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
+      <Pressable
+        onPress={()=> navigation.navigate('Accesses',{screen:'Login'})}
+      >
+        <Text style={styles.title}>Tab Two</Text>
+      </Pressable>
       <View
         style={styles.separator}
         lightColor="#eee"
