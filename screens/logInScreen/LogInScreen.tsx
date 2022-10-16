@@ -8,7 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import CustomInput from '../../components/customInput';
 import Icon from '../../components/icon';
 
-const LogInScreen = () => {
+const LogInScreen = ({ navigation }: any) => {
   const methods = useForm();
   const [remember, setRemember] = useState(false);
   const theme = useTheme();
@@ -56,7 +56,7 @@ const LogInScreen = () => {
           <Button style={styles.btnLogin}>login</Button>
           <View style={styles.singUp}>
             <Text>Don't have an account?</Text>
-            <Pressable>
+            <Pressable onPress={()=> navigation.navigate('Accesses',{screen:'Signin'})}>
               <Text style={styles.singUpText}> Sing Up</Text>
             </Pressable>
           </View>
