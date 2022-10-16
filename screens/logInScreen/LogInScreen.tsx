@@ -32,6 +32,7 @@ const LogInScreen = ({ navigation }: any) => {
                 return <Icon size={24} name="user" color="#fff" />;
               }}/>
             <CustomInput
+              style={styles.input2}
               label=""
               name="password"
               placeholder="Password"
@@ -53,7 +54,7 @@ const LogInScreen = ({ navigation }: any) => {
               <Text>Forgot password?</Text>
             </Pressable>
           </View>
-          <Button style={styles.btnLogin}>login</Button>
+          <Button style={styles.btnLogin}>LOGIN</Button>
           <View style={styles.singUp}>
             <Text>Don't have an account?</Text>
             <Pressable onPress={()=> navigation.navigate('Accesses',{screen:'Signin'})}>
@@ -90,13 +91,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    marginBottom:10
+    marginBottom:10,
+    borderLeftWidth:1,
+    borderLeftColor:'#fff',
+    borderStyle:'solid'
+  },
+  input2:{
+    borderLeftWidth:1,
+    borderLeftColor:'#fff',
+    borderStyle:'solid'
   },
   remember: {
     width: '100%',
     backgroundColor: 'rgba(0,0,0,0)',
     flexDirection: 'row',
-    marginTop: 30,
     justifyContent: 'space-evenly',
   },
   btnLogin: {
