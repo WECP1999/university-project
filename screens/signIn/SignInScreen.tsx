@@ -17,6 +17,7 @@ export default function TabThree() {
             label='Email'
             name='email'
             style={styles.mb_10}
+            keyboardType='email-address'
           />
           <CustomInput
             label='Username'
