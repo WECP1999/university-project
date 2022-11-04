@@ -6,8 +6,8 @@ interface IGenericItem {
   itemCover: string;
   name: string;
   description: string;
-  genres: IGenre[];
-  state: IState;
+  genres: string[];
+  state: string;
   category: 'manga' | 'anime';
 }
 

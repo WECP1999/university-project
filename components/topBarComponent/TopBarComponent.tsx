@@ -1,5 +1,8 @@
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { CompositeNavigationProp } from '@react-navigation/native';
+import {
+  CompositeNavigationProp,
+  ParamListBase,
+} from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Divider, StyleService, useStyleSheet } from '@ui-kitten/components';
 import { Pressable } from 'react-native';
@@ -13,14 +16,7 @@ import { Text, View } from '../Themed';
 
 type TopBarComponentType = {
   title?: string;
-  navigation?: CompositeNavigationProp<
-    BottomTabNavigationProp<
-      RootTabParamList & LoginPramList,
-      'Search',
-      undefined
-    >,
-    NativeStackNavigationProp<RootStackParamList, 'Root', undefined>
-  >;
+  navigation?: BottomTabNavigationProp<ParamListBase, string, undefined>;
   search?: () => void;
   refresh?: () => void;
 };
