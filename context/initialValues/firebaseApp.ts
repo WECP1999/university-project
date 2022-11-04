@@ -1,9 +1,18 @@
 import { FirebaseApp } from 'firebase/app';
+import { Firestore } from 'firebase/firestore';
 
-const initialFirebaseValue: FirebaseApp = {
-  name: '',
-  options: {},
-  automaticDataCollectionEnabled: false,
+export type InitialFirebaseValue = {
+  app?: FirebaseApp;
+  store?: Firestore;
+};
+
+const initialFirebaseValue: InitialFirebaseValue = {
+  app: {
+    name: '',
+    options: {},
+    automaticDataCollectionEnabled: false,
+  },
+  store: undefined,
 };
 
 export default initialFirebaseValue;

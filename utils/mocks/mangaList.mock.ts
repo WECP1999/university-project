@@ -9,12 +9,8 @@ const mangaList: readonly IGenericItem[] = Object.freeze([
     name: '20th Century Boys',
     category: 'manga',
     description: '',
-    genres: genreList.slice(0, 3),
-    state: {
-      id: 1,
-      name: '',
-      description: '',
-    },
+    genres: genreList.slice(0, 3).map((genre) => genre.name),
+    state: 'Active',
   },
   {
     id: 2,
@@ -23,12 +19,8 @@ const mangaList: readonly IGenericItem[] = Object.freeze([
     name: 'Claymore',
     category: 'manga',
     description: '',
-    genres: genreList.slice(3, 6),
-    state: {
-      id: 1,
-      name: '',
-      description: '',
-    },
+    genres: genreList.slice(3, 6).map((genre) => genre.name),
+    state: 'Active',
   },
   {
     id: 3,
@@ -36,12 +28,8 @@ const mangaList: readonly IGenericItem[] = Object.freeze([
     name: 'Berserk',
     category: 'manga',
     description: '',
-    genres: genreList.slice(6, 9),
-    state: {
-      id: 1,
-      name: '',
-      description: '',
-    },
+    genres: genreList.slice(6, 9).map((genre) => genre.name),
+    state: 'Active',
   },
   {
     id: 4,
@@ -50,12 +38,8 @@ const mangaList: readonly IGenericItem[] = Object.freeze([
     name: 'Gantz',
     category: 'manga',
     description: '',
-    genres: genreList.slice(1, 5),
-    state: {
-      id: 1,
-      name: '',
-      description: '',
-    },
+    genres: genreList.slice(1, 5).map((genre) => genre.name),
+    state: 'Active',
   },
   {
     id: 5,
@@ -64,12 +48,8 @@ const mangaList: readonly IGenericItem[] = Object.freeze([
     name: 'One Punch Man',
     category: 'manga',
     description: '',
-    genres: genreList.slice(5, 12),
-    state: {
-      id: 1,
-      name: '',
-      description: '',
-    },
+    genres: genreList.slice(5, 12).map((genre) => genre.name),
+    state: 'Active',
   },
 ]);
 

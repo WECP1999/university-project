@@ -1,12 +1,15 @@
 import React from 'react';
 import { FirebaseApp, initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-config';
-import initialFirebaseValue from '../initialValues/firebaseApp';
+import initialFirebaseValue, {
+  InitialFirebaseValue,
+} from '../initialValues/firebaseApp';
 import FirebaseReducer from '../reducers/FirebaseReducers';
 import IReducerAction from '../../utils/interfaces/IReducerAction';
 
 type FirebaseContextType = {
-  state: FirebaseApp | undefined;
+  state: InitialFirebaseValue;
   dispatch: React.Dispatch<
     IReducerAction<
       Readonly<{
@@ -14,7 +17,7 @@ type FirebaseContextType = {
         SET_APP: 'SET_APP';
         DELETE_APP: 'DELETE_APP';
       }>,
-      FirebaseApp
+      InitialFirebaseValue
     >
   >;
 };
@@ -40,8 +43,9 @@ export const FirebaseContextProvider = ({
   React.useEffect(() => {
     const app = initializeApp(firebaseConfig);
     if (app) {
-      dispatch({ type: 'SET_APP', payload: app });
-      console.log(app);
+      const store = getFirestore(app);
+      dispatch({ type: 'SET_APP', payload: { app } });
+      dispatch({ type: 'SET_STORE', payload: { store } });
     }
   }, []);
 
