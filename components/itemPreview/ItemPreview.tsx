@@ -57,7 +57,7 @@ const moviePreviewStyle = StyleService.create({
   imagePreviewContainer: {
     width: 180,
     height: 260,
-    marginVertical: 8
+    marginVertical: 8,
   },
   image: {
     width: '100%',
