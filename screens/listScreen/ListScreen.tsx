@@ -1,42 +1,59 @@
-import { Pressable, StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../../components/EditScreenInfo';
+import { ScrollView, StyleSheet } from 'react-native';
 import { Text, View } from '../../components/Themed';
 import { RootTabScreenProps } from '../../utils/types/types';
+import ItemList from '../../components/itemList/ItemList';
+import { List } from '@ui-kitten/components';
 
-const TabTwoScreen = ({ navigation }: RootTabScreenProps<'List'>) => {
+const tempData = [{
+  id: 1,
+  itemCover: "nose",
+  name: "koe no katachi",
+  description: "Pa llorar",
+  genres: [],
+  state: "finish",
+  category: 'manga' 
+},
+{
+  id: 2,
+  itemCover: "nose",
+  name: "koe no katachi",
+  description: "Pa llorar",
+  genres: [],
+  state: "finish",
+  category: 'manga' 
+}]
+
+const ListScreen = ({ navigation }: RootTabScreenProps<'List'>) => {
   return (
-    <View style={styles.container}>
-      <Pressable
-        onPress={()=> navigation.navigate('Accesses',{screen:'Login'})}
-      >
-        <Text style={styles.title}>Tab Two</Text>
-      </Pressable>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <List
+          style={styles.containerList}
+          contentContainerStyle={styles.contentContainer}
+          data={tempData}
+          renderItem={ItemList}
+        />
+      </View>
+    </ScrollView>
   );
 };
 
-export default TabTwoScreen;
+export default ListScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 8,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    // alignItems: 'flex-start',
+    width: '100%',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  containerList: {
+    // maxHeight: 320,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  contentContainer: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
 });
