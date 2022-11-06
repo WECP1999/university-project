@@ -26,7 +26,7 @@ const RootNavigator = () => {
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen
           name="Modal"
-          options={{ title: 'Detalle' }}
+          options={{ headerShown: false }}
           component={ModalScreen}
         />
       </Stack.Group>
