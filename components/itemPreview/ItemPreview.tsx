@@ -29,7 +29,11 @@ type ItemPreviewProp = {
 const ItemPreview = ({ style, item, navigation }: ItemPreviewProp) => {
   const styles = useStyleSheet(moviePreviewStyle);
 
-  const onPress = () => {};
+  const onPress = () => {
+    navigation?.navigate('Modal', {
+      itemId: item.id,
+    });
+  };
 
   return (
     <Pressable onPress={onPress} style={{ width: 160 }}>

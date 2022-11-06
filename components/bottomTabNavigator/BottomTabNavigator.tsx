@@ -52,7 +52,13 @@ const BottomTabNavigator = () => {
         options={{
           title: 'List',
           tabBarIcon: ({ color }) => <Icon name="list" color={color} />,
-          header: ({ navigation, route }) => <TopBarComponent title="List" />,
+          header: ({ navigation, route }) => (
+            <TopBarComponent
+              navigation={navigation}
+              refresh={refreshItems}
+              title="List"
+            />
+          ),
         }}
       />
       <BottomTab.Screen
