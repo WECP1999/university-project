@@ -7,9 +7,22 @@ import Icon from '../icon/';
 import HomeScreen from '../../screens/homeScreen';
 import FavoriteScreen from '../../screens/favoriteScreen';
 import TopBarComponent from '../topBarComponent';
+import ItemContext from '../../context/provider/ItemProvider';
+import FirebaseContext from '../../context/provider/FirebaseProvider';
+import { setItemsAction } from '../../context/actions/ItemActions';
 
 const BottomTabNavigator = () => {
   const colorScheme = useColorScheme();
+  const {
+    state: { store },
+  } = React.useContext(FirebaseContext);
+  const { state, dispatch } = React.useContext(ItemContext);
+
+  const refreshItems = () => {
+    if (store) {
+      setItemsAction(store, dispatch);
+    }
+  };
 
   return (
     <BottomTab.Navigator
@@ -24,7 +37,14 @@ const BottomTabNavigator = () => {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <Icon name="home" color={color} />,
-          header: ({ navigation, route }) => <TopBarComponent title="Home" />,
+          header: ({ navigation, route }) => (
+            <TopBarComponent
+              navigation={navigation}
+              refresh={refreshItems}
+              title="Home"
+              search={() => navigation.navigate('Search')}
+            />
+          ),
         }}
       />
       <BottomTab.Screen
@@ -33,7 +53,13 @@ const BottomTabNavigator = () => {
         options={{
           title: 'List',
           tabBarIcon: ({ color }) => <Icon name="list" color={color} />,
-          header: ({ navigation, route }) => <TopBarComponent title="List" />,
+          header: ({ navigation, route }) => (
+            <TopBarComponent
+              navigation={navigation}
+              refresh={refreshItems}
+              title="List"
+            />
+          ),
         }}
       />
       <BottomTab.Screen

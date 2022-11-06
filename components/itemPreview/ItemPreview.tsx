@@ -29,7 +29,11 @@ type ItemPreviewProp = {
 const ItemPreview = ({ style, item, navigation }: ItemPreviewProp) => {
   const styles = useStyleSheet(moviePreviewStyle);
 
-  const onPress = () => {};
+  const onPress = () => {
+    navigation?.navigate('Modal', {
+      itemId: item.id,
+    });
+  };
 
   return (
     <Pressable onPress={onPress} style={{ width: 160 }}>
@@ -57,7 +61,7 @@ const moviePreviewStyle = StyleService.create({
   imagePreviewContainer: {
     width: 180,
     height: 260,
-    marginVertical: 8
+    marginVertical: 8,
   },
   image: {
     width: '100%',

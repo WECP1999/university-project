@@ -18,9 +18,13 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
-  Modal: undefined;
+  Modal: {
+    itemId?: number;
+  } | undefined;
   NotFound: undefined;
   Accesses: NavigatorScreenParams<LoginPramList> | undefined;
+  Search: undefined;
+
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -30,7 +34,6 @@ export type RootTabParamList = {
   Favorite: undefined;
   Home: undefined;
   List: undefined;
-  Search: undefined;
 };
 
 export type LoginPramList = {
