@@ -23,6 +23,8 @@ export type RootStackParamList = {
   } | undefined;
   NotFound: undefined;
   Accesses: NavigatorScreenParams<LoginPramList> | undefined;
+  Search: undefined;
+
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -32,7 +34,6 @@ export type RootTabParamList = {
   Favorite: undefined;
   Home: undefined;
   List: undefined;
-  Search: undefined;
 };
 
 export type LoginPramList = {
