@@ -1,36 +1,26 @@
 import { ScrollView, StyleSheet } from 'react-native';
+import React from 'react';
 import { Text, View } from '../../components/Themed';
 import { RootTabScreenProps } from '../../utils/types/types';
 import ItemList from '../../components/itemList/ItemList';
 import { List } from '@ui-kitten/components';
-
-const tempData = [{
-  id: 1,
-  itemCover: "nose",
-  name: "koe no katachi",
-  description: "Pa llorar",
-  genres: [],
-  state: "finish",
-  category: 'manga' 
-},
-{
-  id: 2,
-  itemCover: "nose",
-  name: "koe no katachi",
-  description: "Pa llorar",
-  genres: [],
-  state: "finish",
-  category: 'manga' 
-}]
+import ItemContext from '../../context/provider/ItemProvider';
 
 const ListScreen = ({ navigation }: RootTabScreenProps<'List'>) => {
+  const {
+    state: { items, loading },
+  } = React.useContext(ItemContext);
+  
+  if (loading) {
+    return <Text>Loading</Text>;
+  }
+  
   return (
     <ScrollView>
       <View style={styles.container}>
         <List
-          style={styles.containerList}
           contentContainerStyle={styles.contentContainer}
-          data={tempData}
+          data={items}
           renderItem={ItemList}
         />
       </View>
@@ -46,14 +36,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    // alignItems: 'flex-start',
     width: '100%',
-  },
-  containerList: {
-    // maxHeight: 320,
   },
   contentContainer: {
     paddingHorizontal: 8,
     paddingVertical: 4,
+    backgroundColor: '#ffff'
   },
 });
