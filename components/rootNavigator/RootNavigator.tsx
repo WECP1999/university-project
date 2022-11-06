@@ -1,5 +1,6 @@
 import React from 'react';
 import ModalScreen from '../../screens/modalScreen';
+import FilterScreen from '../../screens/filterScreen';
 import NotFoundScreen from '../../screens/notFoundScreen';
 import Stack from '../../utils/navigation/Stack';
 import AccessNavigator from '../accessNavigator/';
@@ -28,6 +29,11 @@ const RootNavigator = () => {
           name="Modal"
           options={{ title: 'Detalle' }}
           component={ModalScreen}
+        />
+        <Stack.Screen
+          name="Search"
+          options={{ title: 'Search', headerShown:false }}
+          component={FilterScreen}
         />
       </Stack.Group>
     </Stack.Navigator>

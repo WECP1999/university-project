@@ -42,6 +42,7 @@ const BottomTabNavigator = () => {
               navigation={navigation}
               refresh={refreshItems}
               title="Home"
+              search={() => navigation.navigate('Search')}
             />
           ),
         }}
