@@ -6,7 +6,7 @@ const AccessNavigator = () => {
   return (
     <AccessStack.Navigator initialRouteName="Login">
       <AccessStack.Screen options={{headerShown:false}} name="Login" component={LogInScreen} />
-      <AccessStack.Screen name="Signin" component={SignIn} />
+      <AccessStack.Screen options={{headerShown:false}} name="Signin" component={SignIn} />
     </AccessStack.Navigator>
   );
 };

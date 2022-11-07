@@ -1,17 +1,59 @@
-import { useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet } from 'react-native';
-import { View } from '../../components/Themed';
-import { Text, Input, CheckBox, Button, useTheme } from '@ui-kitten/components';
+import { Button, CheckBox, Text, useTheme } from '@ui-kitten/components';
 import Constants from 'expo-constants';
-import Colors from '../../styles/theme.json';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useContext, useState } from 'react';
+import { FieldValues, FormProvider, useForm } from 'react-hook-form';
+import { Alert, Image, Pressable, ScrollView, StyleSheet } from 'react-native';
 import CustomInput from '../../components/customInput';
 import Icon from '../../components/icon';
+import { View } from '../../components/Themed';
+import UserContext from '../../context/provider/UserProvider';
+import Colors from '../../styles/theme.json';
 
-const LogInScreen = () => {
+
+const LogInScreen = ({ navigation }: any) => {
   const methods = useForm();
   const [remember, setRemember] = useState(false);
   const theme = useTheme();
+  const { user, signIn, logIn, persistentUser, checkPersistentUser}: any = useContext(UserContext);
+
+  const handleLogIn = async (formInputs: FieldValues) => {
+    console.log(user);
+
+    if (!formInputs.email || !formInputs.password) {
+      Alert.alert('Campos vacios', 'Llene todo los campos');
+      return;
+    }
+
+    const error = await logIn(formInputs.email, formInputs.password);
+
+    if (error) {
+      if(error.code === 'auth/invalid-email'){
+        Alert.alert(
+          'Email incorrecto',
+          'Ingrese un email válido'
+        );
+        return;
+      }
+      if (error.code === 'auth/email-already-in-use') {
+        Alert.alert('Usuario/Contraseña no válidos');
+        return;
+      }
+      if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found'){
+        Alert.alert("Usuario/Contraseña no válido","corrija los campos")
+        return
+      }
+      Alert.alert(error.code,error.message)
+      return
+    }
+    // Save the user on the device (Persistence)
+    if(remember){
+      console.log("entro :D en remember")
+      await persistentUser(user);
+      console.log("from LogInScreen:","usuario guardado localmente")
+    }
+    navigation.navigate('Home')
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -26,19 +68,23 @@ const LogInScreen = () => {
             <CustomInput
               style={styles.input}
               label=""
-              name="username"
-              placeholder="Username"
+              name="email"
+              keyboardType='email-address'
+              placeholder="email"
               accessoryLeft={() => {
                 return <Icon size={24} name="user" color="#fff" />;
-              }}/>
+              }}
+            />
             <CustomInput
+              style={styles.input2}
               label=""
               name="password"
               placeholder="Password"
               secureTextEntry
               accessoryLeft={() => {
                 return <Icon size={24} name="lock" color="#fff" />;
-              }}/>
+              }}
+            />
           </FormProvider>
           <View style={styles.remember}>
             <CheckBox
@@ -53,11 +99,15 @@ const LogInScreen = () => {
               <Text>Forgot password?</Text>
             </Pressable>
           </View>
-          <Button style={styles.btnLogin}>login</Button>
+          <Button onPress={methods.handleSubmit(handleLogIn)} style={styles.btnLogin}>LOGIN</Button>
           <View style={styles.singUp}>
             <Text>Don't have an account?</Text>
-            <Pressable>
-              <Text style={styles.singUpText}> Sing Up</Text>
+            <Pressable
+              onPress={() =>
+                navigation.navigate('Accesses', { screen: 'Signin' })
+              }
+            >
+              <Text style={styles.singUpText}>Sing Up</Text>
             </Pressable>
           </View>
         </View>
@@ -90,13 +140,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    marginBottom:10
+    marginBottom: 10,
+    borderLeftWidth: 1,
+    borderLeftColor: '#fff',
+    borderStyle: 'solid',
+  },
+  input2: {
+    borderLeftWidth: 1,
+    borderLeftColor: '#fff',
+    borderStyle: 'solid',
   },
   remember: {
     width: '100%',
     backgroundColor: 'rgba(0,0,0,0)',
     flexDirection: 'row',
-    marginTop: 30,
     justifyContent: 'space-evenly',
   },
   btnLogin: {

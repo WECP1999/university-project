@@ -33,6 +33,8 @@ import Icon from '../../components/icon';
 import { Rating } from 'react-native-ratings';
 import { Alert } from 'react-native';
 import IRating from '../../utils/interfaces/IRating';
+import { useContext } from 'react';
+import UserContext from '../../context/provider/UserProvider';
 
 type ModalScreenType = NativeStackScreenProps<RootStackParamList, 'Modal'>;
 
@@ -44,6 +46,7 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
   const [defaultRating, setDefaultRating] = React.useState(3.5);
   const [favoriteId, setFavoriteId] = React.useState('');
   const styles = useStyleSheet(modalScreenStyle);
+  const { user, checkPersistentUser}: any = useContext(UserContext);
 
   const {
     state: { store },
