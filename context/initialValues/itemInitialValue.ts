@@ -7,7 +7,7 @@ export type ItemsState = {
 
 const items: ItemsState = {
   items: [],
-  loading: false,
+  loading: true,
 };
 
 export default items;

@@ -19,10 +19,13 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ItemContext from '../../context/provider/ItemProvider';
 import FirebaseContext from '../../context/provider/FirebaseProvider';
 import {
+  deleteFavorite,
   editRating,
   getGlobalRating,
+  getIsFavorite,
   getRating,
   getSingleItem,
+  setFavorite,
   setRating,
 } from '../../context/actions/ItemActions';
 import IGenericItem from '../../utils/interfaces/IGenericItem';
@@ -39,6 +42,7 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
   >();
   const [ratingId, setRatingId] = React.useState('');
   const [defaultRating, setDefaultRating] = React.useState(3.5);
+  const [favoriteId, setFavoriteId] = React.useState('');
   const styles = useStyleSheet(modalScreenStyle);
 
   const {
@@ -53,28 +57,54 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
     async (rate: number) => {
       const id = route.params?.itemId;
       if (id && store) {
+        setDefaultRating(rate);
         if (ratingId !== '0') {
-          const editResponse = await editRating(
-            store,
-            dispatch,
-            ratingId,
-            rate,
-            id.toString(),
-            '2'
-          );
+          await editRating(store, dispatch, ratingId, rate);
           return;
         }
-        const response = await setRating(store, dispatch, id.toString(), rate);
+        const response = await setRating(
+          store,
+          dispatch,
+          id.toString(),
+          rate,
+          '2'
+        );
         if (!response) {
           Alert.alert(
             `An error have ocurred while attempting to set self ranking for selected item.`
           );
+          return;
         }
+        setRatingId(response.id);
         return;
       }
     },
     [route, ratingId]
   );
+
+  const handleFavorite = React.useCallback(async () => {
+    const id = route.params?.itemId;
+    if (id && store) {
+      if (favoriteId) {
+        setFavoriteId('');
+        await deleteFavorite(store, dispatch, favoriteId);
+        return;
+      }
+      const newFavorite = await setFavorite(
+        store,
+        dispatch,
+        id.toString(),
+        '2'
+      );
+      if (!newFavorite) {
+        Alert.alert(
+          'An error have ocurred, please try to mark as favorite latter.'
+        );
+      }
+      setFavoriteId(newFavorite.id);
+      return;
+    }
+  }, [favoriteId, route, store]);
 
   React.useEffect(() => {
     const getSelectedItem = async () => {
@@ -88,7 +118,6 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
         const rating = await getRating(store, dispatch, id.toString(), '2');
         const typedRating = rating as unknown as IRating;
         if (rating) {
-          console.log(rating);
           setDefaultRating(typedRating.rating);
         } else {
           const globalRating = await getGlobalRating(
@@ -106,6 +135,19 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
     };
     getSelectedItem();
   }, [route]);
+
+  React.useEffect(() => {
+    const getFavorite = async () => {
+      const id = route.params?.itemId;
+      if (id && store) {
+        const item = await getIsFavorite(store, dispatch, id.toString(), '2');
+        if (item) {
+          setFavoriteId(item.id);
+        }
+      }
+    };
+    getFavorite();
+  }, [route, store]);
 
   return (
     <ScrollView style={{ paddingTop: 29, backgroundColor: '#fff' }}>
@@ -127,8 +169,12 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
             {selectedItem?.name}
           </Text>
         </LinearGradient>
-        <Pressable style={styles.favorite}>
-          <Icon color="white" name="heart-o" size={40} />
+        <Pressable style={styles.favorite} onPress={handleFavorite}>
+          <Icon
+            color="white"
+            name={!favoriteId ? 'heart-o' : 'heart'}
+            size={40}
+          />
         </Pressable>
       </ImageBackground>
       <View style={styles.body}>
@@ -161,11 +207,10 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
             {ratingId.trim().length > 0 && (
               <Rating
                 startingValue={defaultRating}
-                fractions
+                type="custom"
+                fractions={1}
                 ratingCount={5}
                 jumpValue={0.5}
-                ratingColor="#417BA4"
-                ratingBackgroundColor="#417BA4"
                 onFinishRating={(rating: number) => setNewRanking(rating)}
               />
             )}
