@@ -1,30 +1,18 @@
-import { Text, View } from '../../components/Themed';
-import { StyleSheet, Alert } from 'react-native';
-import Constants from 'expo-constants';
-import { FieldValues, FormProvider, useForm } from 'react-hook-form';
-import Colors from '../../constants/Colors';
-import CustomInput from '../../components/customInput';
 import { Button } from '@ui-kitten/components';
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
-import firebaseConfig from '../../firebase-config';
+import Constants from 'expo-constants';
 import { useContext } from 'react';
+import { FieldValues, FormProvider, useForm } from 'react-hook-form';
+import { Alert, StyleSheet } from 'react-native';
+import CustomInput from '../../components/customInput';
+import { Text, View } from '../../components/Themed';
 import UserContext from '../../context/provider/UserProvider';
 
 export default function TabThree({ navigation }: any) {
   const methods = useForm();
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  const { user, signIn, logout }: any = useContext(UserContext);
+  const { user, signIn, logIn }: any = useContext(UserContext);
 
   const HandleSignIn = async (formInputs: FieldValues) => {
     console.log('imprimiendo usuario desde signInScreen', user);
-    console.log(formInputs.password)
     if (
       !formInputs.email ||
       !formInputs.password ||

@@ -25,7 +25,7 @@ const UserProvider = ({ children }: Props) => {
   //User state
   const [user, setUser] = useState({});
 
-  const signIn = async (email:string, password:string) => {
+  const signIn = async (email: string, password: string) => {
     const error = await createUserWithEmailAndPassword(auth, email, password)
       .then((UserCredential) => {
         console.info('cuenta creada');
@@ -37,19 +37,19 @@ const UserProvider = ({ children }: Props) => {
     return error;
   };
 
-  const logIn = async (email:string, password:string) => {
+  const logIn = async (email: string, password: string) => {
     const error = await signInWithEmailAndPassword(auth, email, password)
-    .then((UserCredential) => {
-      console.info('cuenta creada');
-      setUser(UserCredential.user);
-    })
-    .catch((error) => {
-      return error;
-    });
-  return error;
+      .then((UserCredential) => {
+        setUser(UserCredential.user);
+      })
+      .catch((error) => {
+        return error;
+      });
+    return error;
   };
 
   const firebaseObjUser = { user, signIn, logIn };
+
   return (
     <UserContext.Provider value={firebaseObjUser}>
       {children}
