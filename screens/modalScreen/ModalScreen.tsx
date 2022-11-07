@@ -30,6 +30,8 @@ import Icon from '../../components/icon';
 import { Rating } from 'react-native-ratings';
 import { Alert } from 'react-native';
 import IRating from '../../utils/interfaces/IRating';
+import { useContext } from 'react';
+import UserContext from '../../context/provider/UserProvider';
 
 type ModalScreenType = NativeStackScreenProps<RootStackParamList, 'Modal'>;
 
@@ -40,6 +42,7 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
   const [ratingId, setRatingId] = React.useState('');
   const [defaultRating, setDefaultRating] = React.useState(3.5);
   const styles = useStyleSheet(modalScreenStyle);
+  const { user, checkPersistentUser}: any = useContext(UserContext);
 
   const {
     state: { store },
@@ -128,8 +131,14 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
           </Text>
         </LinearGradient>
         <Pressable
-          onPress={() => {
-            navigation.navigate('Accesses', { screen: 'Login' });
+          onPress={ async () => {
+            const userExist = await checkPersistentUser();
+            if(userExist){
+              console.log("Ya hay un usuario y es: ", user)
+              return
+            } else {
+              navigation.navigate('Accesses', { screen: 'Login' });
+            }
           }}
           style={styles.favorite}
         >

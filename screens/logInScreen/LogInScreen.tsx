@@ -1,27 +1,23 @@
-import { useState, useContext } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Alert } from 'react-native';
-import { View } from '../../components/Themed';
-import { Text, Input, CheckBox, Button, useTheme } from '@ui-kitten/components';
+import { Button, CheckBox, Text, useTheme } from '@ui-kitten/components';
 import Constants from 'expo-constants';
-import Colors from '../../styles/theme.json';
-import { FormProvider, useForm, FieldValues } from 'react-hook-form';
+import { useContext, useState } from 'react';
+import { FieldValues, FormProvider, useForm } from 'react-hook-form';
+import { Alert, Image, Pressable, ScrollView, StyleSheet } from 'react-native';
 import CustomInput from '../../components/customInput';
 import Icon from '../../components/icon';
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
+import { View } from '../../components/Themed';
 import UserContext from '../../context/provider/UserProvider';
+import Colors from '../../styles/theme.json';
+
 
 const LogInScreen = ({ navigation }: any) => {
   const methods = useForm();
   const [remember, setRemember] = useState(false);
   const theme = useTheme();
-  const { user, signIn, logIn }: any = useContext(UserContext);
+  const { user, signIn, logIn, persistentUser, checkPersistentUser}: any = useContext(UserContext);
 
   const handleLogIn = async (formInputs: FieldValues) => {
+    console.log(user);
 
     if (!formInputs.email || !formInputs.password) {
       Alert.alert('Campos vacios', 'Llene todo los campos');
@@ -48,6 +44,12 @@ const LogInScreen = ({ navigation }: any) => {
       }
       Alert.alert(error.code,error.message)
       return
+    }
+    // Save the user on the device (Persistence)
+    if(remember){
+      console.log("entro :D en remember")
+      await persistentUser(user);
+      console.log("from LogInScreen:","usuario guardado localmente")
     }
     navigation.navigate('Home')
   };

@@ -20,14 +20,14 @@ export default function App() {
     return (
       <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
         <SafeAreaProvider>
-          <UserProvider>
-            <FirebaseContextProvider>
+          <FirebaseContextProvider>
+            <UserProvider>
               <ItemContextProvider>
                 <Navigation colorScheme={colorScheme} />
                 <StatusBar />
               </ItemContextProvider>
-            </FirebaseContextProvider>
-          </UserProvider>
+            </UserProvider>
+          </FirebaseContextProvider>
         </SafeAreaProvider>
       </ApplicationProvider>
     );
