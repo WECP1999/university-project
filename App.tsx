@@ -8,6 +8,7 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { FirebaseContextProvider } from './context/provider/FirebaseProvider';
 import { ItemContextProvider } from './context/provider/ItemProvider';
+import { UserProvider } from './context/provider/UserProvider';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -20,10 +21,12 @@ export default function App() {
       <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
         <SafeAreaProvider>
           <FirebaseContextProvider>
-            <ItemContextProvider>
-              <Navigation colorScheme={colorScheme} />
-              <StatusBar />
-            </ItemContextProvider>
+            <UserProvider>
+              <ItemContextProvider>
+                <Navigation colorScheme={colorScheme} />
+                <StatusBar />
+              </ItemContextProvider>
+            </UserProvider>
           </FirebaseContextProvider>
         </SafeAreaProvider>
       </ApplicationProvider>
