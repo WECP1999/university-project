@@ -7,6 +7,8 @@ import Colors from '../../styles/theme.json';
 import { FormProvider, useForm } from 'react-hook-form';
 import CustomInput from '../../components/customInput';
 import Icon from '../../components/icon';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
 
 const LogInScreen = ({ navigation }: any) => {
   const methods = useForm();
@@ -58,7 +60,7 @@ const LogInScreen = ({ navigation }: any) => {
           <View style={styles.singUp}>
             <Text>Don't have an account?</Text>
             <Pressable onPress={()=> navigation.navigate('Accesses',{screen:'Signin'})}>
-              <Text style={styles.singUpText}> Sing Up</Text>
+              <Text style={styles.singUpText}>Sing Up</Text>
             </Pressable>
           </View>
         </View>

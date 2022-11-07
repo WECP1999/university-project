@@ -127,7 +127,12 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
             {selectedItem?.name}
           </Text>
         </LinearGradient>
-        <Pressable style={styles.favorite}>
+        <Pressable
+          onPress={() => {
+            navigation.navigate('Accesses', { screen: 'Login' });
+          }}
+          style={styles.favorite}
+        >
           <Icon color="white" name="heart-o" size={40} />
         </Pressable>
       </ImageBackground>

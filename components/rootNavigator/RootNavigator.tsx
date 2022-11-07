@@ -5,6 +5,7 @@ import NotFoundScreen from '../../screens/notFoundScreen';
 import Stack from '../../utils/navigation/Stack';
 import AccessNavigator from '../accessNavigator/';
 import BottomTabNavigator from '../bottomTabNavigator';
+import LogInScreen from '../../screens/logInScreen/LogInScreen';
 
 const RootNavigator = () => {
   return (
@@ -34,6 +35,11 @@ const RootNavigator = () => {
           name="Search"
           options={{ title: 'Search', headerShown:false }}
           component={FilterScreen}
+        />
+        <Stack.Screen
+          name="LogIn"
+          options={{headerShown:false,}}
+          component={LogInScreen}
         />
       </Stack.Group>
     </Stack.Navigator>
