@@ -7,7 +7,8 @@ import {
   doc,
   getDoc,
   addDoc,
-  setDoc,
+  updateDoc,
+  deleteDoc,
 } from 'firebase/firestore';
 import IGenericItem from '../../utils/interfaces/IGenericItem';
 import IReducerAction from '../../utils/interfaces/IReducerAction';
@@ -113,16 +114,22 @@ export const getGlobalRating = async (
 export const setRating = async (
   store: Firestore,
   dispatch: ItemsDispatch,
-  id: string,
-  rating: number
+  itemId: string,
+  rating: number,
+  userId: string
 ) => {
   try {
     dispatch({ type: 'SET_LOADING', payload: { loading: true } });
     const fireStore = collection(store, 'itemRating');
+    const ratingExist = await getRating(store, dispatch, itemId, userId);
+    if (ratingExist) {
+      await editRating(store, dispatch, ratingExist.id, rating);
+      return ratingExist;
+    }
     const newRating = await addDoc(fireStore, {
-      itemId: id,
+      itemId,
       rating: rating,
-      userId: '2',
+      userId,
     });
     dispatch({ type: 'SET_LOADING', payload: { loading: false } });
     return newRating;
@@ -135,21 +142,104 @@ export const editRating = async (
   store: Firestore,
   dispatch: ItemsDispatch,
   id: string,
-  rating: number,
+  rating: number
+) => {
+  try {
+    dispatch({ type: 'SET_LOADING', payload: { loading: true } });
+    const docRef = doc(store, 'itemRating', id);
+    const updatedRating = await updateDoc(docRef, {
+      rating: rating,
+    });
+    dispatch({ type: 'SET_LOADING', payload: { loading: false } });
+    return updatedRating;
+  } catch (e: any) {
+    throw new Error(e.message);
+  }
+};
+
+export const getIsFavorite = async (
+  store: Firestore,
+  dispatch: ItemsDispatch,
   itemId: string,
   userId: string
 ) => {
   try {
     dispatch({ type: 'SET_LOADING', payload: { loading: true } });
-    const docRef = doc(store, 'itemRating', id);
-    const updatedRating = await setDoc(docRef, {
-      rating: rating,
+    const fireStore = collection(store, 'favorites');
+    const querySnap = query(
+      fireStore,
+      where('userId', '==', userId),
+      where('itemId', '==', itemId)
+    );
+    const itemSnap = await getDocs(querySnap);
+    const selectedRating = itemSnap.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    dispatch({ type: 'SET_LOADING', payload: { loading: false } });
+    return selectedRating[0];
+  } catch (e: any) {
+    dispatch({ type: 'SET_LOADING', payload: { loading: false } });
+    throw new Error(e.message);
+  }
+};
+
+export const getAllFavorites = async (
+  store: Firestore,
+  userId: string,
+  items: IGenericItem[]
+) => {
+  try {
+    const favoriteFirestore = collection(store, 'favorites');
+    const querySnap = query(favoriteFirestore, where('userId', '==', userId));
+    const itemSnap = await getDocs(querySnap);
+    const favorites = itemSnap.docs.map((doc) => doc.data()?.itemId);
+    if (favorites.length > 0) {
+      const filteredData = items.filter((item) =>
+        favorites.find((fav) => fav === item.id.toString())
+      );
+      return filteredData;
+    }
+    return [] as IGenericItem[];
+  } catch (e: any) {
+    throw new Error(e.message);
+  }
+};
+
+export const setFavorite = async (
+  store: Firestore,
+  dispatch: ItemsDispatch,
+  itemId: string,
+  userId: string
+) => {
+  try {
+    dispatch({ type: 'SET_LOADING', payload: { loading: true } });
+    const fireStore = collection(store, 'favorites');
+    const newFavorite = await addDoc(fireStore, {
       itemId,
       userId,
     });
     dispatch({ type: 'SET_LOADING', payload: { loading: false } });
-    return updatedRating;
+    return newFavorite;
   } catch (e: any) {
+    throw new Error(e.message);
+  }
+};
+
+export const deleteFavorite = async (
+  store: Firestore,
+  dispatch: ItemsDispatch,
+  id: string
+) => {
+  try {
+    dispatch({ type: 'SET_LOADING', payload: { loading: true } });
+    const docRef = doc(store, 'favorites', id);
+    const deleted = await deleteDoc(docRef);
+    dispatch({ type: 'SET_LOADING', payload: { loading: false } });
+    return deleted;
+  } catch (e: any) {
+    dispatch({ type: 'SET_LOADING', payload: { loading: false } });
     throw new Error(e.message);
   }
 };

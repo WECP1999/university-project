@@ -6,8 +6,10 @@ import { RootTabScreenProps } from '../../utils/types/types';
 import FirebaseContext from '../../context/provider/FirebaseProvider';
 import ItemContext from '../../context/provider/ItemProvider';
 import { setItemsAction } from '../../context/actions/ItemActions';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Spinner } from '@ui-kitten/components';
 
-const HomeScreen = ({ navigation }: RootTabScreenProps<'Home'>) => {
+const HomeScreen = (navigation: RootTabScreenProps<'Home'>) => {
   const {
     state: { store },
   } = React.useContext(FirebaseContext);
@@ -17,6 +19,8 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<'Home'>) => {
   } = React.useContext(ItemContext);
 
   const getAllItems = React.useCallback(async () => {
+    console.log(!items || items?.length === 0);
+
     if (store) {
       setItemsAction(store, dispatch);
     }
@@ -26,25 +30,55 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<'Home'>) => {
     getAllItems();
   }, [getAllItems]);
 
-  if (loading) {
-    return <Text>Loading</Text>;
+  if ((!items || items?.length === 0) &&  loading) {
+    return (
+      <SafeAreaView
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#fff',
+        }}
+      >
+        <Spinner size="giant" />
+      </SafeAreaView>
+    );
   }
 
   return (
     <ScrollView>
       <View style={styles.container}>
         {items &&
-          items.map((manga, index) => (
+          items.slice(0, 6).map((manga, index) => (
             <ItemPreview
               key={manga.id}
               item={manga}
-              navigation={navigation}
+              navigationDefinition={navigation as any}
               style={{
                 marginLeft: (index + 1) % 2 === 0 ? 36 : 0,
               }}
             />
           ))}
       </View>
+      {loading && (
+        <SafeAreaView
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'absolute',
+            opacity: 0.8,
+            backgroundColor: '#fff',
+            zIndex: 999999999,
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+        >
+          <Spinner size="giant" />
+        </SafeAreaView>
+      )}
     </ScrollView>
   );
 };

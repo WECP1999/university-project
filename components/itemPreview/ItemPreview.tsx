@@ -9,30 +9,30 @@ import {
   LoginPramList,
   RootStackParamList,
   RootTabParamList,
+  RootTabScreenProps,
 } from '../../utils/types/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import IGenericItem from '../../utils/interfaces/IGenericItem';
 
-type ItemPreviewProp = {
+type ItemPreviewProp<Screen extends keyof RootTabParamList & LoginPramList> = {
   item: IGenericItem;
   style?: StyleProp<ViewStyle>;
-  navigation?: CompositeNavigationProp<
-    BottomTabNavigationProp<
-      RootTabParamList & LoginPramList,
-      'Home',
-      undefined
-    >,
-    NativeStackNavigationProp<RootStackParamList, 'Root', undefined>
-  >;
+  navigationDefinition?: RootTabScreenProps<Screen>;
 };
 
-const ItemPreview = ({ style, item, navigation }: ItemPreviewProp) => {
+const ItemPreview = <Screen extends keyof RootTabParamList & LoginPramList>({
+  style,
+  item,
+  navigationDefinition,
+}: ItemPreviewProp<Screen>) => {
   const styles = useStyleSheet(moviePreviewStyle);
-
   const onPress = () => {
-    navigation?.navigate('Modal', {
-      itemId: item.id,
-    });
+    if (navigationDefinition) {
+      const { navigation } = navigationDefinition;
+      navigation?.navigate('Modal', {
+        itemId: item.id,
+      });
+    }
   };
 
   return (
