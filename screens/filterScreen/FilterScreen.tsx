@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import React from 'react';
 import { Text, View } from '../../components/Themed';
 import { StyleSheet, Pressable, ScrollView, Image } from 'react-native';
 import Icon from '../../components/icon/Icon';
@@ -9,17 +9,18 @@ import { Input } from '@ui-kitten/components';
 import ItemContext from '../../context/provider/ItemProvider';
 import ItemPreview from '../../components/itemPreview';
 import IGenericItem from '../../utils/interfaces/IGenericItem';
+import useDebounce from '../../utils/hooks/useDebounce';
 
 type SearchScreenType = NativeStackScreenProps<RootStackParamList, 'Search'>;
 
 const FilterScreen = (navigation: SearchScreenType) => {
-  const [searchItem, setSearchItem] = useState('');
-
-  const [listToDisplay, setListToDisplay] = useState<IGenericItem[]>([]);
+  const [searchItem, setSearchItem] = React.useState('');
+  const debouncedValue = useDebounce(searchItem);
+  const [listToDisplay, setListToDisplay] = React.useState<IGenericItem[]>([]);
 
   const {
     state: { items },
-  } = useContext(ItemContext);
+  } = React.useContext(ItemContext);
 
   const handleChange = (e: string) => {
     setSearchItem(e);
@@ -27,17 +28,17 @@ const FilterScreen = (navigation: SearchScreenType) => {
 
   let counter = 0;
 
-  useEffect(() => {
-    if (items && (searchItem !== '' || counter > 0)) {
+  React.useEffect(() => {
+    if (items && (debouncedValue !== '' || counter > 0)) {
       counter += 1;
       let list = items.filter((item) => {
-        return item.name.includes(searchItem);
+        return item.name.includes(debouncedValue);
       });
       setListToDisplay(list);
     } else {
       setListToDisplay([]);
     }
-  }, [searchItem]);
+  }, [debouncedValue]);
 
   return (
     <View style={styles.container}>

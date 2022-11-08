@@ -33,7 +33,6 @@ import Icon from '../../components/icon';
 import { Rating } from 'react-native-ratings';
 import { Alert } from 'react-native';
 import IRating from '../../utils/interfaces/IRating';
-import { useContext } from 'react';
 import UserContext from '../../context/provider/UserProvider';
 
 type ModalScreenType = NativeStackScreenProps<RootStackParamList, 'Modal'>;
@@ -45,8 +44,8 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
   const [ratingId, setRatingId] = React.useState('');
   const [defaultRating, setDefaultRating] = React.useState(3.5);
   const [favoriteId, setFavoriteId] = React.useState('');
+  const { user }: any = React.useContext(UserContext);
   const styles = useStyleSheet(modalScreenStyle);
-  const { user, checkPersistentUser}: any = useContext(UserContext);
 
   const {
     state: { store },
@@ -59,7 +58,7 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
   const setNewRanking = React.useCallback(
     async (rate: number) => {
       const id = route.params?.itemId;
-      if (id && store) {
+      if (id && store && user && Object.keys(user).length > 0) {
         setDefaultRating(rate);
         if (ratingId !== '0') {
           await editRating(store, dispatch, ratingId, rate);
@@ -70,7 +69,7 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
           dispatch,
           id.toString(),
           rate,
-          '2'
+          user.uid
         );
         if (!response) {
           Alert.alert(
@@ -81,13 +80,20 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
         setRatingId(response.id);
         return;
       }
+
+      if (!user || !user.uid) {
+        Alert.alert(
+          'Ups!',
+          'It seems like you have not log in, please try again after you log in.'
+        );
+      }
     },
-    [route, ratingId]
+    [route, ratingId, user]
   );
 
   const handleFavorite = React.useCallback(async () => {
     const id = route.params?.itemId;
-    if (id && store) {
+    if (id && store && user && Object.keys(user).length > 0) {
       if (favoriteId) {
         setFavoriteId('');
         await deleteFavorite(store, dispatch, favoriteId);
@@ -97,17 +103,24 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
         store,
         dispatch,
         id.toString(),
-        '2'
+        user.uid
       );
       if (!newFavorite) {
         Alert.alert(
+          'Ups!',
           'An error have ocurred, please try to mark as favorite latter.'
         );
       }
       setFavoriteId(newFavorite.id);
       return;
     }
-  }, [favoriteId, route, store]);
+    if (!user || !user.uid) {
+      Alert.alert(
+        'Ups!',
+        'It seems like you have not log in, please try again after you log in.'
+      );
+    }
+  }, [favoriteId, route, store, user]);
 
   React.useEffect(() => {
     const getSelectedItem = async () => {
@@ -118,7 +131,12 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
           dispatch,
           id.toString()
         )) as unknown as IGenericItem;
-        const rating = await getRating(store, dispatch, id.toString(), '2');
+        const rating = await getRating(
+          store,
+          dispatch,
+          id.toString(),
+          user.uid ? user.uid : '0'
+        );
         const typedRating = rating as unknown as IRating;
         if (rating) {
           setDefaultRating(typedRating.rating);
@@ -137,20 +155,25 @@ const ModalScreen = ({ route, navigation }: ModalScreenType) => {
       }
     };
     getSelectedItem();
-  }, [route]);
+  }, [route, store, user]);
 
   React.useEffect(() => {
     const getFavorite = async () => {
       const id = route.params?.itemId;
-      if (id && store) {
-        const item = await getIsFavorite(store, dispatch, id.toString(), '2');
+      if (id && store && user && Object.keys(user).length > 0) {
+        const item = await getIsFavorite(
+          store,
+          dispatch,
+          id.toString(),
+          user.uid
+        );
         if (item) {
           setFavoriteId(item.id);
         }
       }
     };
     getFavorite();
-  }, [route, store]);
+  }, [route, store, user]);
 
   return (
     <ScrollView style={{ paddingTop: 29, backgroundColor: '#fff' }}>

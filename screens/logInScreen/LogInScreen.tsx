@@ -9,49 +9,43 @@ import { View } from '../../components/Themed';
 import UserContext from '../../context/provider/UserProvider';
 import Colors from '../../styles/theme.json';
 
-
 const LogInScreen = ({ navigation }: any) => {
   const methods = useForm();
   const [remember, setRemember] = useState(false);
-  const theme = useTheme();
-  const { user, signIn, logIn, persistentUser, checkPersistentUser}: any = useContext(UserContext);
+  const { logIn, persistentUser }: any = useContext(UserContext);
 
   const handleLogIn = async (formInputs: FieldValues) => {
-    console.log(user);
-
     if (!formInputs.email || !formInputs.password) {
       Alert.alert('Campos vacios', 'Llene todo los campos');
       return;
     }
 
-    const error = await logIn(formInputs.email, formInputs.password);
+    const user = await logIn(formInputs.email, formInputs.password);
 
-    if (error) {
-      if(error.code === 'auth/invalid-email'){
-        Alert.alert(
-          'Email incorrecto',
-          'Ingrese un email válido'
-        );
+    if (user.code) {
+      if (user.code === 'auth/invalid-email') {
+        Alert.alert('Email incorrecto', 'Ingrese un email válido');
         return;
       }
-      if (error.code === 'auth/email-already-in-use') {
+      if (user.code === 'auth/email-already-in-use') {
         Alert.alert('Usuario/Contraseña no válidos');
         return;
       }
-      if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found'){
-        Alert.alert("Usuario/Contraseña no válido","corrija los campos")
-        return
+      if (
+        user.code === 'auth/wrong-password' ||
+        user.code === 'auth/user-not-found'
+      ) {
+        Alert.alert('Usuario/Contraseña no válido', 'corrija los campos');
+        return;
       }
-      Alert.alert(error.code,error.message)
-      return
+      Alert.alert(user.code, user.message);
+      return;
     }
     // Save the user on the device (Persistence)
-    if(remember){
-      console.log("entro :D en remember")
+    if (remember) {
       await persistentUser(user);
-      console.log("from LogInScreen:","usuario guardado localmente")
     }
-    navigation.navigate('Home')
+    navigation.navigate('Home');
   };
 
   return (
@@ -69,7 +63,7 @@ const LogInScreen = ({ navigation }: any) => {
               style={styles.input}
               label=""
               name="email"
-              keyboardType='email-address'
+              keyboardType="email-address"
               placeholder="email"
               accessoryLeft={() => {
                 return <Icon size={24} name="user" color="#fff" />;
@@ -99,7 +93,12 @@ const LogInScreen = ({ navigation }: any) => {
               <Text>Forgot password?</Text>
             </Pressable>
           </View>
-          <Button onPress={methods.handleSubmit(handleLogIn)} style={styles.btnLogin}>LOGIN</Button>
+          <Button
+            onPress={methods.handleSubmit(handleLogIn)}
+            style={styles.btnLogin}
+          >
+            LOGIN
+          </Button>
           <View style={styles.singUp}>
             <Text>Don't have an account?</Text>
             <Pressable

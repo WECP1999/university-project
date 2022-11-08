@@ -58,6 +58,7 @@ const BottomTabNavigator = () => {
               navigation={navigation}
               refresh={refreshItems}
               title="List"
+              search={() => navigation.navigate('Search')}
             />
           ),
         }}
@@ -69,7 +70,12 @@ const BottomTabNavigator = () => {
           title: 'Favorites',
           tabBarIcon: ({ color }) => <Icon name="heart" color={color} />,
           header: ({ navigation, route }) => (
-            <TopBarComponent title="Favorite" />
+            <TopBarComponent
+              title="Favorite"
+              refresh={refreshItems}
+              navigation={navigation}
+              search={() => navigation.navigate('Search')}
+            />
           ),
         }}
       />

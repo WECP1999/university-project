@@ -12,7 +12,6 @@ export default function TabThree({ navigation }: any) {
   const { user, signIn, logIn }: any = useContext(UserContext);
 
   const HandleSignIn = async (formInputs: FieldValues) => {
-    console.log('imprimiendo usuario desde signInScreen', user);
     if (
       !formInputs.email ||
       !formInputs.password ||
@@ -30,11 +29,8 @@ export default function TabThree({ navigation }: any) {
     const error = await signIn(formInputs.email, formInputs.password);
 
     if (error) {
-      if(error.code === 'auth/invalid-email'){
-        Alert.alert(
-          'Email incorrecto',
-          'Ingrese un email válido'
-        );
+      if (error.code === 'auth/invalid-email') {
+        Alert.alert('Email incorrecto', 'Ingrese un email válido');
         return;
       }
       if (error.code === 'auth/weak-password') {
@@ -48,24 +44,11 @@ export default function TabThree({ navigation }: any) {
         Alert.alert('Usuario/Contraseña no válidos');
         return;
       }
-      Alert.alert(error.code,error.message)
-      return
+      Alert.alert(error.code, error.message);
+      return;
     }
-    Alert.alert("Usuario creado","usuario creado correctamente");
-    navigation.navigate('Home')
-    // createUserWithEmailAndPassword(auth,data.email,data.password)
-    // .then( (UserCredential) =>{
-    //   console.info("cuenta creada");
-    //   const user = UserCredential.user
-    //   console.log(user);
-    // })
-    // .catch( error =>{
-    //   if(error.code === "auth/weak-password"){
-    //     Alert.alert("Contraseña débil","La contraseña debe ser mayor a 6 carácteres")
-    //     return
-    //   }
-    //   Alert.alert("Error",error.code)
-    // })
+    Alert.alert('Usuario creado', 'usuario creado correctamente');
+    navigation.navigate('Home');
   };
 
   return (

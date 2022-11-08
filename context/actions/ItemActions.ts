@@ -185,6 +185,28 @@ export const getIsFavorite = async (
   }
 };
 
+export const getAllFavorites = async (
+  store: Firestore,
+  userId: string,
+  items: IGenericItem[]
+) => {
+  try {
+    const favoriteFirestore = collection(store, 'favorites');
+    const querySnap = query(favoriteFirestore, where('userId', '==', userId));
+    const itemSnap = await getDocs(querySnap);
+    const favorites = itemSnap.docs.map((doc) => doc.data()?.itemId);
+    if (favorites.length > 0) {
+      const filteredData = items.filter((item) =>
+        favorites.find((fav) => fav === item.id.toString())
+      );
+      return filteredData;
+    }
+    return [] as IGenericItem[];
+  } catch (e: any) {
+    throw new Error(e.message);
+  }
+};
+
 export const setFavorite = async (
   store: Firestore,
   dispatch: ItemsDispatch,
